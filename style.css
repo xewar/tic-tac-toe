@@ -108,3 +108,6 @@ h1, .choose, #players{
     justify-content: center;
     font-size: 40px;
 }
+#message{
+    margin-top: 15px;
+}
