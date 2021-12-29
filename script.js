@@ -105,16 +105,11 @@ const findWinner = () => {
         }
     
     //Second player wins
-    } 
-    
-    if ((lastTurn === 1) && (xSet.size === oSet.size)) {
-        message.textContent = `${winningPlayer} wins.`
-        if (winningPlayer === 'X') {
-            xScore.textContent += '&#9751';
-        }
+    } if ((lastTurn === 1) && (xSet.size === oSet.size)) {
+        message.textContent = `${winner[0]} wins.`
     //First player wins
     } else if (lastTurn === 2) {
-        message.textContent = `${winningPlayer} wins.`
+        message.textContent = `${winner[0]} wins.`
     //Tie
     } else if ((lastTurn === 3) || (xSet.size +oSet.size === 9)){ 
         message.textContent = 'Tie.';
