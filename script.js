@@ -58,6 +58,9 @@ let xSet = new Set(); //store each players position in a set
 let oSet = new Set(); //store each players position in a set
 //Updating the display and board each time a square is selected
 const updateCellandBoard = (cell) => {
+    if (gameOver === 1) {
+        return
+    }
     turnNumber += 1;
     if (cell.textContent != ''){ //can't click the same square twice
         return
@@ -80,9 +83,15 @@ allCells.forEach(cell => cell.addEventListener('click', function(){
 
 let lastTurn = 0
 let winner = [];
+let gameCount
+let gameOver = 0
+let message = document.querySelector('#message');
+
 //Check for a winner
 const findWinner = () => {
-    let message = document.querySelector('#message');
+    if (gameOver === 1) {
+        return
+    }
     let winningArrays = [['0,0', '0,1', '0,2'],['1,0', '1,1', '1,2'],['2,0', '2,1', '2,2'],
     ['0,0', '1,0', '2,0'],['0,1', '1,1', '2,1'],['0,2', '1,2', '2,2'],
     ['0,0', '1,1', '2,2'],['2,0', '1,1', '0,2']
@@ -103,17 +112,30 @@ const findWinner = () => {
             winner.push('O');
             lastTurn += 1;
         }
-    
     //Second player wins
-    } if ((lastTurn === 1) && (xSet.size === oSet.size)) {
-        message.textContent = `${winner[0]} wins.`
+    } console.log(lastTurn,winner, xSet.size, oSet.size);
+
+    if ((lastTurn === 1) && (xSet.size === oSet.size)) {
+        message.textContent = `${winner[0]} wins.`;
+        gameOver = 1
     //First player wins
     } else if (lastTurn === 2) {
-        message.textContent = `${winner[0]} wins.`
+        message.textContent = `${winner[0]} wins.`;
+        gameOver = 1;
     //Tie
-    } else if ((lastTurn === 3) || (xSet.size +oSet.size === 9)){ 
+    } else if (lastTurn === 3){ 
         message.textContent = 'Tie.';
-    } 
+        gameOver = 1;
+    } else if (xSet.size +oSet.size === 9) {
+        if (winner[0]){ //if first player wins on the last move
+            message.textContent = `${winner[0]} wins.`;
+            gameOver = 1;
+        }
+        else {
+            message.textContent = 'Tie.';
+            gameOver = 1;
+        }
+    }
 }    
 
 //Restart
@@ -129,6 +151,7 @@ const restartGame = () => {
     winner = [];
     lastTurn = 0;
     message.textContent='';
+    gameOver = 0;
 }
 
 let restart = document.querySelector('.restart');
